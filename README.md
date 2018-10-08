@@ -29,7 +29,7 @@ Essa documentação online tem como objetivo descrever o uso da API ExpenseOn pa
     - [Atualizar status de adiantamento](#atualizar-status-de-adiantamento)
   - [Relatórios](#relatórios)
     - [Obter Relatórios a pagar](#obter-relatórios-a-pagar)
-    - [Atualizar status de despesas em relatórios](#Atualizar-status-de-despesas-em-relatórios)
+    - [Atualizar status de despesas em relatórios](#atualizar-status-de-despesas-em-relatórios)
 - [Referência de Objetos](#referência-de-objetos)
 
 ## Introdução
