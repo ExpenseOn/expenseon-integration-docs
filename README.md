@@ -13,7 +13,8 @@ Essa documentação online tem como objetivo descrever o uso da API ExpenseOn pa
   - [Regras Gerais](#regras-gerais)
 - [Autenticação](#autenticação)
   - [Básica](#básica)
-- [Sincronismo de dados de domínio](#sincronismo-de-dados-de-domínio)
+- [Os dois macro processos](#os-dois-macro-processos)
+- [Cadastros](#Cadastros)
   - [Estado das Integrações](#estado-das-integrações)
   - [Usuários](#usuários)
   - [Categorias e Contas Contábeis](#categorias-e-contas-contábeis)
@@ -22,12 +23,12 @@ Essa documentação online tem como objetivo descrever o uso da API ExpenseOn pa
   - [Áreas](#áreas)
   - [Projetos](#projetos)
   - [Clientes e Contatos](#clientes-e-contatos)
-- [Documentos do processo de reembolso](#documentos-do-processo-de-reembolso)
+- [Prestação de Contas](#Prestação-de-Contas)
   - [Adiantamento](#adiantamento)
-    - [Obter Adiantamentos a pagar e/ou em processamento](#obter-adiantamentos-a-pagar-e/ou-em-processamento)
+    - [Obter Adiantamentos a pagar](#obter-adiantamentos-a-pagar)
     - [Atualizar status de adiantamento](#atualizar-status-de-adiantamento)
   - [Relatórios](#relatórios)
-    - [Obter Relatórios a pagar e/ou em processamento](#obter-relatórios-a-pagar-e/ou-em-processamento)
+    - [Obter Relatórios a pagar](#obter-relatórios-a-pagar)
     - [Atualizar status de relatório](#atualizar-status-de-relatório)
 - [Referência de Objetos](#referência-de-objetos)
 
@@ -170,9 +171,15 @@ Ticket: 6378523e-dadb-427a-8605
 
 Caso o acesso aos endpoints sejam feitos sem o uso do `Ticket` ou com o mesmo expirado após 20 minutos de uso, o servidor enviará uma resposta com o código `401 Unauthorized`.
 
-## Sincronismo de dados de domínio
+## Os Dois Macro Processos
 
-O sincronismo dos dados no ExpenseOn através de integração de sistemas externos deve ser feito em agrupamentos conforme as instrunções abaixo:
+Há dois macro processos envolvidos na integração do ExpenseOn com sistemas ERP.
+
+O primeiro que tem o objetivo de, inicialmente facilitar a inserção dos cadastros no ExpenseOn, e em momentos seguintes, através de jobs , facilitar o sincronismo dos dados do ERP com a ferramenta. Dessa forma, a integração garante que os dados de domínio do ERP estarão sempre em dia com os utilizados no ExpenseOn.
+
+O segundo processo tem como objetivo inicial a criação de objetos financeiros no ERP através da tradução dos elementos consultados no ExpenseOn. Em um momento seguinte, também é responsável por retornar à ferramenta o status de pagamento dos documentos financeiros criados no primeiro passo.
+
+A seguir, vamos exemplificar os endpoints que são utilizados na execução de ambos os processos.
 
 ### Estado das Integrações
 
@@ -301,45 +308,53 @@ POST /api/integration/client
 |---|---|---|
 |clients|[Client](#client)[]|Lista de objetos do tipo Cliente|
 
-## Documentos do processo de reembolso
+## Prestação de Contas
 
-No ExpenseOn, há dois processos onde os sistemas ERP podem ser integrados: Os processos de adiantamento e relatório. Veja abaixo de forma detalhada como o processo acontece.
+No processo de prestação de contras, o endpoint de *Adiantamentos* é responsável por listar os adiantamentos com o status `Approved`. Esses adiantamentos devem ser utilizados para criar objetos financeiros que serão pagos aos funcionários.
+
+Já o endpoint de *Relatórios* é responsável por listar relatórios aprovados com despesas aprovadas e adiantamentos a serem compensados.
 
 ### Adiantamento
 
 #### O processo de negócio
 
-Para solicitar um adiantamento no Expenseon, o usuário cria e envia um documento para seu aprovador para que o mesmo seja aprovado. Após esse processo, o usuário financeiro pode iniciar o processo de pagamento.
+Para solicitar um adiantamento no Expenseon, o usuário cria e envia um documento para seu aprovador para que o mesmo seja aprovado. Após esse processo, o sistema financeiro pode iniciar o processo de pagamento.
 
-O usuário financeiro então seleciona os adiantamentos que ele deseja enviar para seu ERP, e assim que os documentos financeiros referentes aos adiantamentos são pagos, o ERP sinaliza ao ExpenseOn os documentos de adiantamento que devem ser sincronizados.
+Para fazer o pagamento desse adiantamento, o ERP deve selecionar os adiantamentos com o status `Approved` e deve criar documentos financeiros para efetuar posteriormente seu pagamento. Assim que os documentos financeiros referentes aos adiantamentos são pagos, o ERP sinaliza ao ExpenseOn os documentos de adiantamento que devem ter seus status modificados para `Payed` e também atualiza suas referências no ERP.
 
-Após essa sincronização, o ExpenseOn estará atualizado com as informações do sistema ERP e o usuário já poderá utilizar o valor em adiantamento.
+Após essa etapa de alteração de status, o ExpenseOn estará atualizado com as informações do sistema ERP e o usuário já poderá utilizar o valor pago.
 
 Veja agora nos próximos passos como o processo pode ser facilmente executado através da API do ExpenseOn.
 
-#### Obter Adiantamentos a pagar e/ou em processamento
+#### Obter Adiantamentos a pagar
 
 ```HTTP
 GET /api/integration/advpayment
 ```
 
-##### Objeto de Resposta em caso de sucesso:
+|Parâmetro|Tipo|Descrição|
+|---|---|---|
+|startDate|`datetime`|Data referência inicial|
+|endDate|`datetime`|Data referência final|
+
+##### Objeto de Resposta em caso de sucesso
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
 |advPayments|[AdvancedPayment](#advancedpayment)[]|Lista de objetos do tipo Adiantamento|
 
-Os documentos listados no objeto acima, possuem o atributo `advPaymentStatusName` atribuidos com os status `ReadyToPay` e `Processing`. 
+Os documentos listados no objeto acima, possuem o atributo `advPaymentStatusName` atribuidos com os status `Approved`.
 
-Os objetos com o status `ReadyToPay` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP, enquanto os objetos com status `Processing` devem ser utilizados para verificar o status de pagamento dos documentos _Contas a Pagar_ previamente criados em outras chamadas.
+Os objetos com o status `Approved` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP.
 
 #### Atualizar status de adiantamento
 
-Essa chamada deve ser utilizada para basicamente três ocasiões:
+Essa chamada deve ser utilizada para atualizar o *Adiantamento* no ExpenseOn com os dados do documento financeiro e o status desejado:
 
-- Alteração do status de adiantamentos para `Processing` em caso de **sucesso** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
-- Alteração do status de adiantamentos para `ErrorToSend` em caso de **falha** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
-- Alteração do status de adiantamentos para `Payed` quando o documento de _Contas a Pagar_ foi pago no sistema ERP.
+- Na criação do documento *Contas a Pagar*, deve atualizar somente a referência do documento no ERP ao ExpenseOn.
+- Na alteração do status do adiantamento para `Error` em caso de **falha** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
+- No pagamento do documento *Contas a Pagar*, deve atualizar somente o status para `Payed`.
+- Na contabilização do Adiantamento no *Financeiro* do ERP. Sinalizando que o adiantamento foi compensando, então usando o status `Finished`.
 
 ```HTTP
 POST /api/integration/advpayment
@@ -349,40 +364,55 @@ POST /api/integration/advpayment
 |---|---|---|
 |changes|[DocumentChange](#documentchange)[]|Lista de objetos de alteração de documentos|
 
-A configuração do parâmetro `changes` na chamada acima deverá ser feita de acordo com cada uma das situações abaixo:
+O parâmetro `changes` na chamada acima deverá ter um array com os documentos que precisam ter seu stado moficiado conforme as possibilidades abaixo:
 
 ##### Em todas as situações
 
-- O valor do parâmetro `documentId` deve ser o valor do atributo `id` no objeto [AdvancedPayment](#advancedpayment) utilizado no processo.
+- O valor do atributo `documentId` o id do adiantamento no ExpenseOn.
 
 ##### Contas a pagar criado
 
-- Deve-se preencher o atributo `status` com a string `Processing`.
 - O valor do parâmetro `financeDocumentId` deve ser a referência do documento de **Contas a Pagar** no ERP.
 
 ##### Erro no processamento do ERP
 
-- Deve-se preencher o atributo `status` com a string `ErrorToSend` e o atributo `message` com o motivo do erro para futura depuração.
+- Deve-se preencher o atributo `status` com a string `Error` e o atributo `message` com o motivo do erro para futura depuração.
+
+##### Contas a pagar pago
+
+- Deve-se preencher o atributo `status` com a string `Payed`.
 
 ### Relatórios
 
-#### Obter Relatórios a pagar e/ou em processamento
+O endpoint de relatórios funciona como se fosse um "extrato" dos relatórios submetidos pelos funcionários do sistema. Todos os relatórios terão suas despesas e adiantamentos listados e a lógica contábil de cada ERP deve ser aplicada conforme o processo da empresa dona do sistema.
+
+#### Obter Relatórios a pagar
+
+```HTTP
+GET /api/integration/report
+```
+
+|Parâmetro|Tipo|Descrição|
+|---|---|---|
+|startDate|`datetime`|Data referência inicial|
+|endDate|`datetime`|Data referência final|
+
+##### Objeto de Resposta em caso de sucesso
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
 |reports|[Report](#report)[]|Lista de objetos do tipo Relatório|
 
-Os documentos listados no objeto acima, possuem o atributo `reportStatusName` atribuidos com os status `ReadyToPay` e `Processing`.
+Os documentos listados no objeto acima, possuem o atributo `reportStatusName` atribuidos com os status `Approved`.
 
-Os objetos com o status `ReadyToPay` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP, enquanto os objetos com status `Processing` devem ser utilizados para verificar o status de pagamento dos documentos _Contas a Pagar_ previamente criados em outras chamadas.
+Os objetos com o status `Approved` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP através das despesas no atributo `expenses`.
 
-#### Atualizar status de relatório
+#### Atualizar status de despesas em relatórios
 
 Essa chamada deve ser utilizada para basicamente três ocasiões:
 
-- Alteração do status de relatórios para `Processing` em caso de **sucesso** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
-- Alteração do status de relatórios para `ErrorToSend` em caso de **falha** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
-- Alteração do status de relatórios para `Payed` quando o documento de _Contas a Pagar_ foi pago no sistema ERP.
+- Alteração do status de despesas para `Error` em caso de **falha** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
+- Alteração do status de despesas para `Payed` quando o documento de _Contas a Pagar_ foi pago no sistema ERP.
 
 ```HTTP
 POST /api/integration/report
@@ -396,16 +426,19 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 
 ##### Em todas as situações
 
-- O valor do parâmetro `documentId` deve ser o valor do atributo `id` no objeto [Report](#report) utilizado no processo.
+- O valor do parâmetro `documentId` deve ser o valor do atributo `id` no objeto [Expense](#expense) ou [AdvPayment](#AdvPayment) utilizado no processo.
 
 ##### Contas a pagar criado
 
-- Deve-se preencher o atributo `status` com a string `Processing`.
 - O valor do parâmetro `financeDocumentId` deve ser a referência do documento de **Contas a Pagar** no ERP.
 
 ##### Erro no processamento do ERP
 
-- Deve-se preencher o atributo `status` com a string `ErrorToSend` e o atributo `message` com o motivo do erro para futura depuração.
+- Deve-se preencher o atributo `status` com a string `Error` e o atributo `message` com o motivo do erro para futura depuração.
+
+##### Contas a pagar Pago
+
+- Deve-se preencher o atributo `status` com a string `Payed`.
 
 ## Referência de Objetos
 
@@ -480,6 +513,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`costCenterReferenceId`|string|Centro de custo na qual o projeto se refere|
 |`isActive`|boolean|Define se o projeto está ativo ou inativo|
 |`users`|[User](#user)[]|Usuários atribuídos ao projeto|
+|`categoryReferences`|string[]|Código de referência das categorias atreladas ao projeto|
 
 ### Client
 
@@ -506,6 +540,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |---|---|---|
 |`documentId`|integer|Identificação do documento no ExpenseOn|
 |`financeDocumentId`|string|Atributo usado para dar referência ao documento em questão no contas a pagar no ERP|
+|`date`|datetime|Data da alteração de status e/ou referência do documento|
 |`status`|[DocumentPaymentStatus](#documentpaymentstatus)|Status do documento|
 |`message`|string|Mensagem de resposta do ERP em casos de erro|
 
@@ -513,10 +548,10 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 
 |Valor|Enumeração|Descrição|
 |---|---|---|
-|`ReadyToPay`|1|Documento pronto para processar no ERP|
-|`ErrorToSend`|2|Erro na criação do documento de _Contas a Pagar_ no ERP|
-|`Processing`|3|Documento financeiro foi criado com sucesso no _Contas a Pagar_|
-|`Payed`|4|Documento financeiro foi pago com sucesso no _Contas a Pagar_ no ERP|
+|`Approved`|1|Documento pronto para processar no ERP|
+|`Error`|2|Erro na criação do documento de _Contas a Pagar_ no ERP|
+|`Payed`|3|Documento financeiro foi pago com sucesso no _Contas a Pagar_ no ERP|
+|`Finished`|4|Documento financeiro foi contabilizado com sucesso no módulo financeiro do ERP|
 
 ### Report
 
@@ -549,10 +584,13 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |Atributo|Tipo|Descrição|
 |---|---|---|
 |`id`|integer|Id da despesa|
+|`reference`|integer|Referência da despesa|
 |`categoryReferenceId`|string|Referência da categoria da despesa|
 |`categoryDescription`|string|Nome da categoria da despesa|
 |`creationDate`|datetime|Data de criação da despesa|
 |`expenseDate`|datetime|Data de vencimento da despesa|
+|`expenseStatus`|integer|Código do status da despesa|
+|`expenseStatusName`|integer|Descrição do status da despesa|
 |`local`|string|Local onde a despesa ocorreu|
 |`receiptId`|string|Id do recibo da despesa|
 |`currencyCode`|string|Código da moeda da despesa. Ex: `BRL`, `USD`, etc|
@@ -566,6 +604,9 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`costCenterReferenceId`|string|Atributo que atrela a despesa à um centro de custo específico|
 |`comment`|string|Atributo utilizado para adicionar observações à despesa|
 |`creator`|[User](#user)|Usuário criador da despesa|
+|`submittedDate`|datetime|Data do envio para aprovação da despesa|
+|`approvalDate`|datetime|Data da aprovação da despesa|
+|`paymentDate`|datetime|Data de reembolso do adiantamento|
 
 ### AdvancedPayment
 
@@ -585,5 +626,5 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`costCenterReferenceId`|string|Atributo que atrela o adiantamento à um centro de custo específico|
 |`firstApproval`|datetime|Data da primeira aprovação do adiantamento|
 |`lastApproval`|datetime|Data da última aprovação do adiantamento|
-|`submittedDate`|datetime|Data do último envio para adiantamento|
+|`submittedDate`|datetime|Data do envio para aprovação|
 |`paymentDate`|datetime|Data de reembolso do adiantamento|
