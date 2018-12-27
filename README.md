@@ -368,7 +368,8 @@ O parâmetro `changes` na chamada acima deverá ter um array com os documentos q
 
 ##### Em todas as situações
 
-- O valor do atributo `documentId` o id do adiantamento no ExpenseOn.
+- O valor do atributo `documentType` é o tipo do documento. 3 para *Adiantamento*.
+- O valor do atributo `documentId` o campo `reference` do adiantamento no ExpenseOn.
 
 ##### Contas a pagar criado
 
@@ -426,7 +427,8 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 
 ##### Em todas as situações
 
-- O valor do parâmetro `documentId` deve ser o valor do atributo `id` no objeto [Expense](#expense) ou [AdvPayment](#AdvPayment) utilizado no processo.
+- O valor do atributo `documentType` é o tipo do documento. 1 para *Relatório* ou 2 para *Despesa*.
+- O valor do parâmetro `documentId` deve ser o valor do atributo `reference` no objeto [Expense](#expense) ou [AdvPayment](#AdvPayment) utilizado no processo.
 
 ##### Contas a pagar criado
 
@@ -538,7 +540,8 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
-|`documentId`|integer|Identificação do documento no ExpenseOn|
+|`documentType`|integer|Tipo do documento no ExpenseOn. 1 - Report, 2 - Expense, 3 - AdvPayment|
+|`documentId`|string|Identificação do documento no ExpenseOn|
 |`financeDocumentId`|string|Atributo usado para dar referência ao documento em questão no contas a pagar no ERP|
 |`date`|datetime|Data da alteração de status e/ou referência do documento|
 |`status`|[DocumentPaymentStatus](#documentpaymentstatus)|Status do documento|
