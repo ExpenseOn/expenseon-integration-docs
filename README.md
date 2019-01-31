@@ -310,7 +310,7 @@ POST /api/integration/client
 
 ## Prestação de Contas
 
-No processo de prestação de contras, o endpoint de *Adiantamentos* é responsável por listar os adiantamentos com o status `ProcessingPayment`. Esses adiantamentos devem ser utilizados para criar objetos financeiros que serão pagos aos funcionários.
+No processo de prestação de contras, o endpoint de *Adiantamentos* é responsável por listar os adiantamentos com o status `WaitingFinanceProcess`. Esses adiantamentos devem ser utilizados para criar objetos financeiros que serão pagos aos funcionários.
 
 Já o endpoint de *Relatórios* é responsável por listar relatórios aprovados com despesas aprovadas e adiantamentos a serem compensados.
 
@@ -320,7 +320,11 @@ Já o endpoint de *Relatórios* é responsável por listar relatórios aprovados
 
 Para solicitar um adiantamento no Expenseon, o usuário cria e envia um documento para seu aprovador para que o mesmo seja aprovado. Após esse processo, o sistema financeiro pode iniciar o processo de pagamento.
 
-Para fazer o pagamento desse adiantamento, o ERP deve selecionar os adiantamentos com o status `ProcessingPayment` e deve criar documentos financeiros para efetuar posteriormente seu pagamento. Assim que os documentos financeiros referentes aos adiantamentos são pagos, o ERP sinaliza ao ExpenseOn os documentos de adiantamento que devem ter seus status modificados para `Payed` e também atualiza suas referências no ERP.
+Para fazer o pagamento desse adiantamento, o ERP deve selecionar os adiantamentos com o status `WaitingFinanceProcess` e deve criar documentos financeiros para efetuar posteriormente seu pagamento. 
+
+No momento da criação do documento financeiro no ERP, o mesmo deve sinalizar ao ExpenseOn que um título foi criado, enviando dessa vez o status `ProcessingPayment` com o atributo `financeDocumentId` opcional o ID do documento criado no ERP.
+
+Assim que os documentos financeiros referentes aos adiantamentos são pagos, o ERP sinaliza ao ExpenseOn os documentos de adiantamento que devem ter seus status modificados para `Payed` e também atualiza suas referências no ERP.
 
 Após essa etapa de alteração de status, o ExpenseOn estará atualizado com as informações do sistema ERP e o usuário já poderá utilizar o valor pago.
 
@@ -343,15 +347,15 @@ GET /api/integration/advpayment
 |---|---|---|
 |advPayments|[AdvancedPayment](#advancedpayment)[]|Lista de objetos do tipo Adiantamento|
 
-Os documentos listados no objeto acima, possuem o atributo `advPaymentStatusName` atribuidos com os status `ProcessingPayment`.
+Os documentos listados no objeto acima, possuem o atributo `advPaymentStatusName` atribuidos com os status `WaitingFinanceProcess`.
 
-Os objetos com o status `Approved` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP.
+Os objetos com o status `WaitingFinanceProcess` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP.
 
 #### Atualizar status de adiantamento
 
 Essa chamada deve ser utilizada para atualizar o *Adiantamento* no ExpenseOn com os dados do documento financeiro e o status desejado:
 
-- Na criação do documento *Contas a Pagar*, deve atualizar somente a referência do documento no ERP ao ExpenseOn.
+- Na criação do documento *Contas a Pagar*, deve atualizar a referência usando o status `WaitingFinanceProcess` e o atributo `financeDocumentId` do documento no ERP ao ExpenseOn e travar o cancelamento do processo de integração para o adiantamento em questão.
 - Na alteração do status do adiantamento para `ErrorProcessingPayment` em caso de **falha** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
 - No pagamento do documento *Contas a Pagar*, deve atualizar somente o status para `Payed`.
 - Na contabilização do Adiantamento no *Financeiro* do ERP. Sinalizando que o adiantamento foi compensando, então usando o status `Finished`.
@@ -373,15 +377,15 @@ O parâmetro `changes` na chamada acima deverá ter um array com os documentos q
 
 ##### Contas a pagar criado
 
-- O valor do parâmetro `financeDocumentId` deve ser a referência do documento de **Contas a Pagar** no ERP.
+- O valor do parâmetro `financeDocumentId` deve ser a referência do documento de **Contas a Pagar** no ERP. Esse documento deve ser o título criado quando usado no status `WaitingFinanceProcess` e o comprovante de pagamento usado no status `Payed`.
 
 ##### Erro no processamento do ERP
 
-- Deve-se preencher o atributo `status` com a string `ErrorProcessingPayment` e o atributo `message` com o motivo do erro para futura depuração.
+- Deve-se preencher o atributo `status` com o valor inteiro do [DocumentPaymentStatus](#documentpaymentstatus) `ErrorProcessingPayment` e o atributo `message` com o motivo do erro para futura depuração.
 
 ##### Contas a pagar pago
 
-- Deve-se preencher o atributo `status` com a string `Payed`.
+- Deve-se preencher o atributo `status` com o valor inteiro do [DocumentPaymentStatus](#documentpaymentstatus) `Payed`.
 
 ### Relatórios
 
@@ -404,16 +408,17 @@ GET /api/integration/report
 |---|---|---|
 |reports|[Report](#report)[]|Lista de objetos do tipo Relatório|
 
-Os documentos listados no objeto acima, possuem o atributo `reportStatusName` atribuidos com os status `ProcessingPayment`.
+Os documentos listados no objeto acima, possuem o atributo `reportStatusName` atribuidos com os status `WaitingFinanceProcess`.
 
-Os objetos com o status `ProcessingPayment` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP através das despesas no atributo `expenses`.
+Os objetos com o status `WaitingFinanceProcess` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP.
 
-#### Atualizar status de despesas em relatórios
+#### Atualizar status de relatórios
 
 Essa chamada deve ser utilizada para basicamente três ocasiões:
 
-- Alteração do status de despesas para `ErrorProcessingPayment` em caso de **falha** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
-- Alteração do status de despesas para `Payed` quando o documento de _Contas a Pagar_ foi pago no sistema ERP.
+- Alteração do status de relatórios para `ProcessingPayment` quando o documento de _Contas a Pagar_ foi criado no sistema ERP.
+- Alteração do status de relatórios para `ErrorProcessingPayment` em caso de **falha** na criação dos documentos de _Contas a Pagar_ no sistema ERP.
+- Alteração do status de relatórios para `Payed` quando o documento de _Contas a Pagar_ foi pago no sistema ERP.
 
 ```HTTP
 POST /api/integration/report
@@ -432,7 +437,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 
 ##### Contas a pagar criado
 
-- O valor do parâmetro `financeDocumentId` deve ser a referência do documento de **Contas a Pagar** no ERP.
+- O valor do parâmetro `financeDocumentId` deve ser a referência do documento de **Contas a Pagar** no ERP. Esse documento deve ser o título criado quando usado no status `WaitingFinanceProcess` e o comprovante de pagamento usado no status `Payed`.
 
 ##### Erro no processamento do ERP
 
@@ -551,8 +556,9 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 
 |Valor|Enumeração|Descrição|
 |---|---|---|
-|`ProcessingPayment`|7|Documento pronto para processar no ERP|
-|`ErrorProcessingPayment`|8|Erro na criação do documento de _Contas a Pagar_ no ERP|
+|`WaitingFinanceProcess`|7|Documento pronto para processar no ERP|
+|`ProcessingPayment`|8|Documento foi criado no ERP|
+|`ErrorProcessingPayment`|9|Erro na criação do documento de _Contas a Pagar_ no ERP|
 |`Payed`|3|Documento financeiro foi pago com sucesso no _Contas a Pagar_ no ERP|
 
 ### Report
@@ -575,7 +581,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`comment`|string|Campo utilizado para inserir observações sobre o relatório|
 |`creator`|[User](#user)[]|Usuário que criou o relatório|
 |`approver`|[User](#user)[]|Usuário assinalado como aprovador do relatório|
-|`creationDate`|datetima|Data de criação do relatório|
+|`creationDate`|datetime|Data de criação do relatório|
 |`firstApproval`|datetime|Data da primeira aprovação do relatório|
 |`lastApproval`|datetime|Data da última aprovação do relatório|
 |`financeApproval`|datetime|Data da última vez que o pagamento foi solicitado no módulo financeiro do ExpenseOn|
