@@ -594,6 +594,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |---|---|---|
 |`id`|integer|Id da despesa|
 |`reference`|integer|Referência da despesa|
+|`isMileage`|boolean|A despesa é do tipo quilometragem|
 |`categoryReferenceId`|string|Referência da categoria da despesa|
 |`categoryDescription`|string|Nome da categoria da despesa|
 |`creationDate`|datetime|Data de criação da despesa|
