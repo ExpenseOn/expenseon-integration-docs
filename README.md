@@ -516,7 +516,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |---|---|---|
 |`projectName`|string|Nome do projeto|
 |`projectReferenceId`|string|Atributo usado para dar referência ao projeto em questão|
-|`clientName`|string|Nome do cliente na qual esse projeto pertence|
+|`clientReferenceId`|string|Código de referência do cliente na qual esse projeto pertence|
 |`costCenterReferenceId`|string|Centro de custo na qual o projeto se refere|
 |`isActive`|boolean|Define se o projeto está ativo ou inativo|
 |`users`|string[]|Código de referência dos usuários atribuídos ao projeto|
