@@ -624,6 +624,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |---|---|---|
 |`id`|integer|Id do adiantamento|
 |`reference`|string|Referência do adiantamento|
+|`parentReference`|string|Referência do adiantamento de origem caso o mesmo seja valor residual|
 |`comment`|string|Atributo utilizado para adicionar observações ao adiantamento|
 |`amount`|decimal|Valor do adiantamento|
 |`currencyCode`|string|Código da moeda do adiantamento. Ex: `BRL`, `USD`, etc|
