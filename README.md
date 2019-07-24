@@ -96,7 +96,7 @@ Para isso as chamadas oficiais devem ser feitas conforme a tabela abaixo:
 
 |Ambiente|URI|
 |---|---|
-|Produção|`https://expenseon.com`|
+|Produção|`https://app.expenseon.com`|
 |Qualidade|`https://qa.expenseon.com`|
 
 Os usuários de acesso ao sistema são criados separadamente, portanto, qualquer sistema deve solicitar primeiramente o _login_ de Qualidade e após sua aprovação, nossa equipe disponibilizará uma outra conta em ambiente produção.
