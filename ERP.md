@@ -503,3 +503,5 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`lastApproval`|datetime|Data da última aprovação do adiantamento|
 |`submittedDate`|datetime|Data do envio para aprovação|
 |`paymentDate`|datetime|Data de reembolso do adiantamento|
+
+[Voltar ao Índice](README.md)
