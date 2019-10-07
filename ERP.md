@@ -313,13 +313,14 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
-|`userLastUpdate`|datetime|Última atualização das entidades do tipo Usuário|
-|`categoryLastUpdate`|datetime|Última atualização das entidades do tipo Categoria|
-|`costCenterLastUpdate`|datetime|Última atualização das entidades do tipo Centro de Custo|
-|`subsidiaryLastUpdate`|datetime|Última atualização das entidades do tipo Filial|
-|`areaLastUpdate`|datetime|Última atualização das entidades do tipo Area|
-|`projectLastUpdate`|datetime|Última atualização das entidades do tipo Projeto|
-|`clientLastUpdate`|datetime|Última atualização das entidades do tipo Cliente|
+|`UserLastUpdate`|datetime|Última atualização das entidades do tipo Usuário|
+|`CategoryLastUpdate`|datetime|Última atualização das entidades do tipo Categoria|
+|`CostCenterLastUpdate`|datetime|Última atualização das entidades do tipo Centro de Custo|
+|`SubsidiaryLastUpdate`|datetime|Última atualização das entidades do tipo Filial|
+|`AreaLastUpdate`|datetime|Última atualização das entidades do tipo Area|
+|`ProjectLastUpdate`|datetime|Última atualização das entidades do tipo Projeto|
+|`ClientLastUpdate`|datetime|Última atualização das entidades do tipo Cliente|
+|`BillToPaySequentialNumber`|integer|Último número sequencial de contas a pagar|
 
 ### User
 
@@ -329,8 +330,11 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`name`|string|Nome do usuário|
 |`email`|string|Email utilizado para login e notificações|
 |`profile`|string|Perfil do usuário, sendo os valores possíveis válidos: _Administrador_, _Financeiro_, _Aprovador_ e _Usuario_|
+|`refSubsidiary`|string|Código da filial que o usuário pertence no ERP|
 |`subsidiary`|string|Filial que o usuário pertence|
+|`refArea`|string|Código da área que o usuário pertence no ERP|
 |`area`|string|Área que o usuário pertence|
+|`refJobPosition`|string|Código do cargo que o usuário pertence no ERP|
 |`jobPosition`|string|Cargo que o usuário exerce na empresa|
 |`isActive`|boolean|Define se o usuário está ativo ou inativo|
 
@@ -390,6 +394,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`clientReferenceId`|string|Atributo usado para dar referência ao cliente em questão|
 |`clientCurrencyCode`|string|Código da moeda utilizada pelo cliente. ex: `BRL`, `USD`, etc.|
 |`isActive`|boolean|Define se o projeto está ativo ou inativo|
+|`users`|string[]|Código de referência dos usuários atribuídos ao cliente|
 |`contacts`|[Contact](#contact)[]|Contatos atribuídos ao cliente|
 
 ### Contact
