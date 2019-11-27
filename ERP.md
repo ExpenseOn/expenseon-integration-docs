@@ -16,6 +16,8 @@ Para utilizar essas funções, é necessário entender o [processo de autentica�
     - [Áreas](#áreas)
     - [Projetos](#projetos)
     - [Clientes e Contatos](#clientes-e-contatos)
+    - [Endereço](#endereço)
+    - [Endereço Usuário](#endereço-usuário)
   - [Prestação de Contas](#Prestação-de-Contas)
     - [Adiantamento](#adiantamento)
       - [Obter Adiantamentos a pagar](#obter-adiantamentos-a-pagar)
@@ -163,6 +165,37 @@ POST /api/integration/client
 |Atributo|Tipo|Descrição|
 |---|---|---|
 |clients|[Client](#client)[]|Lista de objetos do tipo Cliente|
+
+### Endereço 
+
+Função utilizada para inserir ou atualizar endereço. Utilize POST para inserir e PUT para atualizar.
+
+```HTTP
+POST /api/address
+```
+```HTTP
+PUT /api/address
+```
+
+##### Objeto de Resposta em caso de sucesso
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|address|[Address](#address)|Endereço inserido ou atualizado|
+
+### Endereço usuário
+
+Função utilizada para adicionar usuário a um endereço
+
+```HTTP
+POST /api/addressUser
+```
+##### Objeto de Resposta em caso de sucesso
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|addressUser|[AddressUser](#addressuser)|Endereço usuário inserido|
+
 
 ## Prestação de Contas
 
@@ -396,6 +429,24 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`isActive`|boolean|Define se o projeto está ativo ou inativo|
 |`users`|string[]|Código de referência dos usuários atribuídos ao cliente|
 |`contacts`|[Contact](#contact)[]|Contatos atribuídos ao cliente|
+
+### Address
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|`id_address`|int|Id do endereço|
+|`name`|string|Identificação do endereço|
+|`address`|string|Endereço|
+|`id_company`|int|Id da empresa|
+
+### AddressUser
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|`id_address_user`|int|Id do endereço usuário|
+|`id_address`|int|Id do endereço|
+|`id_usuario`|int|Id usuario|
+
 
 ### Contact
 
