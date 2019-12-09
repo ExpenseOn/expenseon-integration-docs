@@ -370,7 +370,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`refJobPosition`|string|Código do cargo que o usuário pertence no ERP|
 |`jobPosition`|string|Cargo que o usuário exerce na empresa|
 |`isActive`|boolean|Define se o usuário está ativo ou inativo|
-|`cpf`|string|Documento CPF do usuário|
+|`documentId`|string|Documento CPF do usuário|
 
 ### Category
 
