@@ -371,6 +371,8 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`jobPosition`|string|Cargo que o usuário exerce na empresa|
 |`isActive`|boolean|Define se o usuário está ativo ou inativo|
 |`documentId`|string|Documento CPF do usuário|
+|`refManager`|string|Referência do superior do usuário (gerente/supervisor) do usuário|
+|`refCostCenter`|string|Referência do centro de custo padrão do usuário do usuário|
 
 ### Category
 
