@@ -544,6 +544,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`paymentDate`|datetime|Data de reembolso do adiantamento|
 |`paymentMethodCode`|string|Código da forma de pagamento|
 |`paymentMethodDescription`|datetime|Descrição da forma de pagamento|
+|`customField1-10`|string|Campos customizados (de 1 a 10)|
 
 ### AdvancedPayment
 
