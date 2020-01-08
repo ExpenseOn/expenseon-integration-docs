@@ -514,6 +514,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`id`|integer|Id da despesa|
 |`reference`|integer|Referência da despesa|
 |`isMileage`|boolean|A despesa é do tipo quilometragem|
+|`isAdvPaymentReturn`|boolean|A despesa é da categoria `Devolução de adiantamento`|
 |`categoryReferenceId`|string|Referência da categoria da despesa|
 |`categoryDescription`|string|Nome da categoria da despesa|
 |`glAccountDescription`|string|Descrição da conta contábil da despesa|
@@ -526,6 +527,9 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`receiptId`|string|Id do recibo da despesa|
 |`currencyCode`|string|Código da moeda da despesa. Ex: `BRL`, `USD`, etc|
 |`amount`|decimal|Valor da despesa|
+|`convertionRate`|decimal|Taxa de conversão da despesa|
+|`currencyConvertion`|string|Moeda de conversão da despesa|
+|`convertedAmount`|decimal|Valor convertido da despesa à moeda padrão da empresa|
 |`reimbursable`|boolean|Atributo que define se a despesa é reembolsável|
 |`billable`|boolean|Atributo que define se a despesa é cobrável do cliente|
 |`clientReferenceId`|string|Atributo que atrela a despesa à um cliente específico|
