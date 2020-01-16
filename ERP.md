@@ -18,6 +18,7 @@ Para utilizar essas funções, é necessário entender o [processo de autentica�
     - [Clientes e Contatos](#clientes-e-contatos)
     - [Endereço](#endereço)
     - [Endereço Usuário](#endereço-usuário)
+    - [Cargos](#cargos)
   - [Prestação de Contas](#Prestação-de-Contas)
     - [Adiantamento](#adiantamento)
       - [Obter Adiantamentos a pagar](#obter-adiantamentos-a-pagar)
@@ -195,6 +196,20 @@ POST /api/addressUser
 |Atributo|Tipo|Descrição|
 |---|---|---|
 |addressUser|[AddressUser](#addressuser)|Endereço usuário inserido|
+
+### Cargos
+
+Função utilizada para inserir ou atualizar cargos no sistema.
+
+- Para que o registro seja atualizado, o campo `officeReferenceId` será utilizado como referência.
+
+```HTTP
+POST /api/integration/office
+```
+
+|Parâmetro|Tipo|Descrição|
+|---|---|---|
+|offices|[Office](#office)[]|Lista de objetos do tipo Cargo|
 
 
 ## Prestação de Contas
@@ -407,7 +422,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |Atributo|Tipo|Descrição|
 |---|---|---|
 |`areaReferenceId`|string|Atributo usado para dar referência à área em questão|
-|`areaName`|string|Atributo usado para dar referência à área em questão|
+|`areaName`|string|Descrição da área|
 |`isActive`|boolean|Define se a área está ativa ou inativa|
 
 ### Project
@@ -567,5 +582,13 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`lastApproval`|datetime|Data da última aprovação do adiantamento|
 |`submittedDate`|datetime|Data do envio para aprovação|
 |`paymentDate`|datetime|Data de reembolso do adiantamento|
+
+### Office
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|`officeReferenceId`|string|Atributo usado para dar referência ao cargo em questão|
+|`officeName`|string|Descrição do cargo|
+|`isActive`|boolean|Define se o cargo está ativo ou inativo|
 
 [Voltar ao Índice](README.md)
