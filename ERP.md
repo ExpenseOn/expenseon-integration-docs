@@ -201,15 +201,15 @@ POST /api/addressUser
 
 Função utilizada para inserir ou atualizar cargos no sistema.
 
-- Para que o registro seja atualizado, o campo `officeReferenceId` será utilizado como referência.
+- Para que o registro seja atualizado, o campo `jobPositionReferenceId` será utilizado como referência.
 
 ```HTTP
-POST /api/integration/office
+POST /api/integration/jobPosition
 ```
 
 |Parâmetro|Tipo|Descrição|
 |---|---|---|
-|offices|[Office](#office)[]|Lista de objetos do tipo Cargo|
+|jobPositions|[JobPosition](#jobPosition)[]|Lista de objetos do tipo Cargo|
 
 
 ## Prestação de Contas
@@ -583,12 +583,12 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`submittedDate`|datetime|Data do envio para aprovação|
 |`paymentDate`|datetime|Data de reembolso do adiantamento|
 
-### Office
+### JobPosition
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
-|`officeReferenceId`|string|Atributo usado para dar referência ao cargo em questão|
-|`officeName`|string|Descrição do cargo|
+|`jobPositionReferenceId`|string|Atributo usado para dar referência ao cargo em questão|
+|`jobPositionName`|string|Descrição do cargo|
 |`isActive`|boolean|Define se o cargo está ativo ou inativo|
 
 [Voltar ao Índice](README.md)
