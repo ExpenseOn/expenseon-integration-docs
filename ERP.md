@@ -515,8 +515,8 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`expenses`|[Expense](#expense)[]|Despesas atreladas ao relatório|
 |`advPayments`|[AdvancedPayment](#advanced-payment)[]|Adiantamentos atrelados ao relatório|
 |`comment`|string|Campo utilizado para inserir observações sobre o relatório|
-|`creator`|[User](#user)[]|Usuário que criou o relatório|
-|`approver`|[User](#user)[]|Usuário assinalado como aprovador do relatório|
+|`creator`|[User](#user)|Usuário que criou o relatório|
+|`approver`|[User](#user)|Usuário assinalado como aprovador do relatório|
 |`creationDate`|datetime|Data de criação do relatório|
 |`firstApproval`|datetime|Data da primeira aprovação do relatório|
 |`lastApproval`|datetime|Data da última aprovação do relatório|
