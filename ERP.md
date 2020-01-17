@@ -365,6 +365,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`profile`|string|Perfil do usuário, sendo os valores possíveis válidos: _Administrador_, _Financeiro_, _Aprovador_ e _Usuario_|
 |`refSubsidiary`|string|Código da filial que o usuário pertence no ERP|
 |`subsidiary`|string|Filial que o usuário pertence|
+|`subsidiaryTaxId`|string|CNPJ da filial que o usuário pertence|
 |`refArea`|string|Código da área que o usuário pertence no ERP|
 |`area`|string|Área que o usuário pertence|
 |`refJobPosition`|string|Código do cargo que o usuário pertence no ERP|
@@ -400,6 +401,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |---|---|---|
 |`subsidiaryReferenceId`|string|Atributo usado para dar referência à filial em questão|
 |`subsidiaryName`|string|Atributo usado para dar referência à filial em questão|
+|`subsidiaryTaxId`|string|CNPJ da filial|
 |`isActive`|boolean|Define se a filial está ativa ou inativa|
 
 ### Area
