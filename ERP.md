@@ -523,6 +523,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`financeApproval`|datetime|Data da última vez que o pagamento foi solicitado no módulo financeiro do ExpenseOn|
 |`submittedDate`|datetime|Data do ultimo envio para aprovação|
 |`reimbursedDate`|datetime|Data de reembolso do relatório|
+|`financeProcessStart`|datetime|Data do processamento do documento financeiro|
 
 ### Expense
 
@@ -584,6 +585,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`lastApproval`|datetime|Data da última aprovação do adiantamento|
 |`submittedDate`|datetime|Data do envio para aprovação|
 |`paymentDate`|datetime|Data de reembolso do adiantamento|
+|`financeProcessStart`|datetime|Data do processamento do documento financeiro|
 
 ### JobPosition
 
