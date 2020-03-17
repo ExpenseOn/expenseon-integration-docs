@@ -389,6 +389,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`documentId`|string|Documento CPF do usuário|
 |`refManager`|string|Referência do superior do usuário (gerente/supervisor)|
 |`refCostCenter`|string|Referência do centro de custo padrão do usuário|
+|`customField1-10`|string|Campos customizados (de 1 a 10)|
 
 ### Category
 
