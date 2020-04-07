@@ -19,6 +19,7 @@ Para utilizar essas funções, é necessário entender o [processo de autentica�
     - [Endereço](#endereço)
     - [Endereço Usuário](#endereço-usuário)
     - [Cargos](#cargos)
+    - [Cartões](#cartões)
   - [Prestação de Contas](#Prestação-de-Contas)
     - [Adiantamento](#adiantamento)
       - [Obter Adiantamentos a pagar](#obter-adiantamentos-a-pagar)
@@ -210,6 +211,20 @@ POST /api/integration/jobPosition
 |Parâmetro|Tipo|Descrição|
 |---|---|---|
 |jobPositions|[JobPosition](#jobPosition)[]|Lista de objetos do tipo Cargo|
+
+### Cartões
+
+Função utilizada para inserir ou atualizar cartões no sistema.
+
+- Para que o registro seja atualizado, o campo `id` será utilizado como referência.
+
+```HTTP
+POST /api/integration/usercard
+```
+
+|Parâmetro|Tipo|Descrição|
+|---|---|---|
+|userCards|[UserCard](#usercard)[]|Lista de objetos do tipo Cartão|
 
 
 ## Prestação de Contas
@@ -595,5 +610,16 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`jobPositionReferenceId`|string|Atributo usado para dar referência ao cargo em questão|
 |`jobPositionName`|string|Descrição do cargo|
 |`isActive`|boolean|Define se o cargo está ativo ou inativo|
+
+### UserCard
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|`id`|integer|Id do cartão|
+|`userId`|integer|Id do usuário a que o cartão pertence|
+|`cardType`|integer|Tipo do cartão(0 = Pré-pago / 1 - Créditp)|
+|`number`|string|Número de proxy do cartão|
+|`cardHolder`|string|Nome do portador do cartão|
+|`active`|boolean|Define se o cartão está ativo ou inativo|
 
 [Voltar ao Índice](README.md)
