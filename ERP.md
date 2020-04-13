@@ -615,9 +615,8 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
-|`id`|integer|Id do cartão|
-|`userId`|integer|Id do usuário a que o cartão pertence|
-|`cardType`|integer|Tipo do cartão(0 = Pré-pago / 1 - Créditp)|
+|`userFinanceSystemId`|integer|Referência do usuário a que o cartão pertence|
+|`cardType`|integer|Tipo do cartão(0 = Pré-pago / 1 = Crédito)|
 |`number`|string|Número de proxy do cartão|
 |`cardHolder`|string|Nome do portador do cartão|
 |`active`|boolean|Define se o cartão está ativo ou inativo|
