@@ -578,6 +578,13 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`paymentDate`|datetime|Data de reembolso do adiantamento|
 |`paymentMethodCode`|string|Código da forma de pagamento|
 |`paymentMethodDescription`|datetime|Descrição da forma de pagamento|
+|`mileageType`|integer|Tipo de Quilometragem(1 = Origem & Destino / 2 = Distância / 3 = Odômetro / 5 = GPS)|
+|`mileageStart`|string |GPS (inicial)|
+|`mileageEnd`|string |GPS (final)|
+|`mileageDistance`|double|Distância de Quilometragem|
+|`mileageRate`|decimal|Taxa de Quilometragem|
+|`mileageOdometerStart`|integer|Odômetro (Quilometragem inicial)|
+|`mileageOdometerEnd`|integer|Odômetro (Quilometragem final)|
 |`customField1-10`|string|Campos customizados (de 1 a 10)|
 
 ### AdvancedPayment
