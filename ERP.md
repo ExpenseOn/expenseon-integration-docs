@@ -424,7 +424,10 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |---|---|---|
 |`costCenterReferenceId`|string|Atributo usado para dar referência ao centro de custo em questão|
 |`costCenterName`|string|Nome do centro de custo|
+|`costCenterOwner`|string|Código do cliente responsável pelo centro de custo|
 |`isActive`|boolean|Define se o centro de custo está ativo ou inativo|
+|`users`|string[]|Código de referência dos usuários atribuídos ao centro de custo|
+|`areas`|string[]|Código de referência das áreas atribuídas ao centro de custo|
 
 ### Subsidiary
 
