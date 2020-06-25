@@ -627,5 +627,6 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`number`|string|Número de proxy do cartão|
 |`cardHolder`|string|Nome do portador do cartão|
 |`active`|boolean|Define se o cartão está ativo ou inativo|
+|`dtStartIntegration`|datetime|Data de início de prestação de contas|
 
 [Voltar ao Índice](README.md)
