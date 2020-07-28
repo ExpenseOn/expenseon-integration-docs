@@ -107,7 +107,7 @@ POST /api/integration/costcenter
 
 |Parâmetro|Tipo|Descrição|
 |---|---|---|
-|costCenters|[CostCencer](#costcenter)[]|Lista de objetos do tipo Centro de Custo|
+|costCenters|[CostCenter](#costcenter)[]|Lista de objetos do tipo Centro de Custo|
 
 ### Filiais
 
@@ -428,6 +428,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`isActive`|boolean|Define se o centro de custo está ativo ou inativo|
 |`users`|string[]|Código de referência dos usuários atribuídos ao centro de custo|
 |`areas`|string[]|Código de referência das áreas atribuídas ao centro de custo|
+|`subsidiaries`|string[]|Código de referência das filiais atribuídas ao centro de custo|
 
 ### Subsidiary
 
