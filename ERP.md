@@ -613,6 +613,8 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`submittedDate`|datetime|Data do envio para aprovação|
 |`paymentDate`|datetime|Data de reembolso do adiantamento|
 |`financeProcessStart`|datetime|Data do processamento do documento financeiro|
+|`clientReferenceId`|string|Atributo que atrela o adiantamento à um cliente específico|
+|`projectReferenceId`|string|Atributo que atrela o adiantamento à um projeto específico|
 
 ### JobPosition
 
