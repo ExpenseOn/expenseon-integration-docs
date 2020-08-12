@@ -590,6 +590,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`mileageOdometerStart`|integer|Odômetro (Quilometragem inicial)|
 |`mileageOdometerEnd`|integer|Odômetro (Quilometragem final)|
 |`customField1-10`|string|Campos customizados (de 1 a 10)|
+|`violations`|[Violation](#violation)[]|Lista de objeto do tipo Violation|
 
 ### AdvancedPayment
 
@@ -634,5 +635,17 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`cardHolder`|string|Nome do portador do cartão|
 |`active`|boolean|Define se o cartão está ativo ou inativo|
 |`dtStartIntegration`|datetime|Data de início de prestação de contas|
+
+### Violation
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|`id_violation`|integer|Id da violação|
+|`id_company`|integer|Id da empresa|
+|`doc_type`|integer|Tipo de documento|
+|`ref_doc`|integer|Id do documento|
+|`type`|integer|Tipo de regra|
+|`description`|string|Descrição da violação|
+|`qtd`|string|Quantidade|
 
 [Voltar ao Índice](README.md)
