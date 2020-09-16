@@ -704,7 +704,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`doc_type`|integer|Tipo da referência da violação(0 = Despesa / 1 = Relatório / 2= Adiantamento)|
 |`ref_doc`|integer|Referência da despesa que a violação pertence|
 |`type`|integer|Tipo de violação|
-|`description`|string|Descrição|
+|`description`|string|Descrição da violação|
 |`qtd`|integer|Indicador de quantidade referente a violação|
 
 [Voltar ao Índice](README.md)
