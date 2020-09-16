@@ -642,7 +642,7 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`areaReference`|string|Referência da área da despesa|
 |`areaName`|string|Descrição da área da despesa|
 |`customField1-10`|string|Campos customizados (de 1 a 10)|
-|`violations`|violation|[Violation](#violation)[]|Lista de violações da despesa|
+|`violations`|[Violation](#violation)[]|Lista de violações da despesa|
 
 
 ### AdvancedPayment
