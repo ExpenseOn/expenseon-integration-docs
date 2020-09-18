@@ -270,6 +270,28 @@ Os documentos listados no objeto acima, possuem o atributo `advPaymentStatusName
 
 Os objetos com o status `WaitingFinanceProcess` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP.
 
+#### Obter Adiantamentos por status
+
+```HTTP
+GET /api/integration/advpayment/status/{selectedStatus}
+```
+
+|Parâmetro|Tipo|Descrição|
+|---|---|---|
+|selectedStatus|`integer`|Status do relatório (0= Rascunho / 1= Aberto / 2= Submetido / 3= Aprovado / 5= Reprovado / 6= Finalizado / 7 = Aguardando Processamento / 8 = Processando Pagamento / 9= Erro Processamento)|
+|startDate|`datetime`|Data referência inicial|
+|endDate|`datetime`|Data referência final|
+
+##### Objeto de Resposta em caso de sucesso
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|advPayments|[AdvancedPayment](#advancedpayment)[]|Lista de objetos do tipo Adiantamento|
+
+Os documentos listados no objeto acima, possuem o atributo `advPaymentStatusName`, alguns atribuidos com os status `WaitingFinanceProcess`.
+
+Os objetos com o status `WaitingFinanceProcess` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP.
+
 #### Atualizar status de adiantamento
 
 Essa chamada deve ser utilizada para atualizar o *Adiantamento* no ExpenseOn com os dados do documento financeiro e o status desejado:
@@ -335,6 +357,28 @@ Os documentos listados no objeto acima, possuem o atributo `reportStatusName` at
 
 Os objetos com o status `WaitingFinanceProcess` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP.
 
+#### Obter Relatórios por status
+
+```HTTP
+GET /api/integration/report/status/{selectedStatus}
+```
+
+|Parâmetro|Tipo|Descrição|
+|---|---|---|
+|selectedStatus|`integer`|Status do relatório (1= Aberto / 2= Submetido / 3= Aprovado / 5= Reprovado / 6= Reembolso / 7 = Aguardando Processamento / 8 = Processando Pagamento / 9= Erro Processamento)|
+|startDate|`datetime`|Data referência inicial|
+|endDate|`datetime`|Data referência final|
+
+##### Objeto de Resposta em caso de sucesso
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|reports|[Report](#report)[]|Lista de objetos do tipo Relatório|
+
+Os dos documentos listados no objeto acima, possuem o atributo `reportStatusName`, alguns atribuidos com os status `WaitingFinanceProcess`.
+
+Os objetos com o status `WaitingFinanceProcess` devem ser utilizados para criar documentos de _Contas a Pagar_ no sistema ERP.
+
 #### Atualizar status de relatórios
 
 Essa chamada deve ser utilizada para basicamente três ocasiões:
@@ -383,6 +427,9 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`AreaLastUpdate`|datetime|Última atualização das entidades do tipo Area|
 |`ProjectLastUpdate`|datetime|Última atualização das entidades do tipo Projeto|
 |`ClientLastUpdate`|datetime|Última atualização das entidades do tipo Cliente|
+|`ReportLastUpdate`|datetime|Última atualização das entidades do tipo Relatório|
+|`AdvPaymentLastUpdate`|datetime|Última atualização das entidades do tipo Adiantamento|
+|`UserCardLastUpdate`|datetime|Última atualização das entidades do tipo Cartão|
 |`BillToPaySequentialNumber`|integer|Último número sequencial de contas a pagar|
 
 ### User
@@ -412,9 +459,9 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |---|---|---|
 |`categoryReferenceId`|string|Atributo usado para dar referência à categoria em questão|
 |`categoryName`|string|Nome da categoria|
-|`parentCategoryName`|string|Nome da categoria superior|
 |`glAccountReferenceId`|string|Referência da conta contábil|
 |`glAccountName`|string|Nome da conta contábil|
+|`parentCategoryReferenceId`|string|Atributo usado para dar referência à categoria superior|
 |`isMileage`|boolean|Define se a categoria é de Milhagem/Quilometragem|
 |`isActive`|boolean|Define se a categoria está ativa ou inativa|
 
@@ -458,6 +505,8 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`isActive`|boolean|Define se o projeto está ativo ou inativo|
 |`users`|string[]|Código de referência dos usuários atribuídos ao projeto|
 |`categoryReferences`|string[]|Código de referência das categorias atreladas ao projeto|
+|`dateStart`|datetime|Data referêncial inicial. Não informar se não houver|
+|`dateEnd`|datetime|Data referêncial final. Não informar se não houver|
 
 ### Client
 
@@ -487,7 +536,6 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`id_address`|int|Id do endereço|
 |`id_usuario`|int|Id usuario|
 
-
 ### Contact
 
 |Atributo|Tipo|Descrição|
@@ -516,12 +564,12 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`ProcessingPayment`|8|Documento foi criado no ERP|
 |`ErrorProcessingPayment`|9|Erro na criação do documento de _Contas a Pagar_ no ERP|
 |`Payed`|3|Documento financeiro foi pago com sucesso no _Contas a Pagar_ no ERP|
+|`Finished`|4|Documento financeiro foi encerrado com sucesso no _Contas a Pagar_ no ERP|
 
 ### Report
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
-|`id`|integer|Id do relatório|
 |`reference`|string|Atributo usado para dar referência ao relatório em questão|
 |`name`|string|Nome do relatório|
 |`reportStatusId`|integer|Status do relatório|
@@ -544,12 +592,12 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`submittedDate`|datetime|Data do ultimo envio para aprovação|
 |`reimbursedDate`|datetime|Data de reembolso do relatório|
 |`financeProcessStart`|datetime|Data do processamento do documento financeiro|
+|`financeDocumentId`|string|Atributo usado para dar referência ao documento em questão no contas a pagar no ERP|
 
 ### Expense
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
-|`id`|integer|Id da despesa|
 |`reference`|integer|Referência da despesa|
 |`isMileage`|boolean|A despesa é do tipo quilometragem|
 |`isAdvPaymentReturn`|boolean|A despesa é da categoria `Devolução de adiantamento`|
@@ -589,19 +637,26 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`mileageRate`|decimal|Taxa de Quilometragem|
 |`mileageOdometerStart`|integer|Odômetro (Quilometragem inicial)|
 |`mileageOdometerEnd`|integer|Odômetro (Quilometragem final)|
+|`subsidiaryReference`|string|Referência da filial da despesa|
+|`subsidiaryName`|string|Descrição da filial da despesa|
+|`areaReference`|string|Referência da área da despesa|
+|`areaName`|string|Descrição da área da despesa|
 |`customField1-10`|string|Campos customizados (de 1 a 10)|
+|`violations`|[Violation](#violation)[]|Lista de violações da despesa|
+
 
 ### AdvancedPayment
 
 |Atributo|Tipo|Descrição|
 |---|---|---|
-|`id`|integer|Id do adiantamento|
 |`reference`|string|Referência do adiantamento|
 |`parentReference`|string|Referência do adiantamento de origem caso o mesmo seja valor residual|
 |`comment`|string|Atributo utilizado para adicionar observações ao adiantamento|
 |`amount`|decimal|Valor do adiantamento|
 |`currencyCode`|string|Código da moeda do adiantamento. Ex: `BRL`, `USD`, etc|
-|`creationDate`|datetime|Data de criação do adiantamento|
+|`convertionRate`|decimal|Taxa de conversão do adiantamento|
+|`currencyConvertion`|string|Código da moeda de conversão do adiantamento. Ex: `BRL`, `USD`, etc|
+|`convertedAmount`|decimal|Valor do adiantamento convertido|
 |`advPaymentDate`|datetime|Data de vencimento do adiantamento|
 |`advPaymentStatus`|integer|Código do status do adiantamento|
 |`advPaymentStatusName`|integer|Descrição do status do adiantamento|
@@ -615,6 +670,11 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`financeProcessStart`|datetime|Data do processamento do documento financeiro|
 |`clientReferenceId`|string|Atributo que atrela o adiantamento à um cliente específico|
 |`projectReferenceId`|string|Atributo que atrela o adiantamento à um projeto específico|
+|`financeReferenceId`|string|Atributo usado para dar referência ao documento em questão no contas a pagar no ERP|
+|`subsidiaryReference`|string|Referência da filial da despesa|
+|`subsidiaryName`|string|Descrição da filial da despesa|
+|`areaReference`|string|Referência da área da despesa|
+|`areaName`|string|Descrição da área da despesa|
 
 ### JobPosition
 
@@ -634,5 +694,17 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`cardHolder`|string|Nome do portador do cartão|
 |`active`|boolean|Define se o cartão está ativo ou inativo|
 |`dtStartIntegration`|datetime|Data de início de prestação de contas|
+
+### Violation
+
+|Atributo|Tipo|Descrição|
+|---|---|---|
+|`id_violation`|integer|Id da violação|
+|`id_company`|integer|Id da empresa|
+|`doc_type`|integer|Tipo da referência da violação(0 = Despesa / 1 = Relatório / 2= Adiantamento)|
+|`ref_doc`|integer|Referência da despesa que a violação pertence|
+|`type`|integer|Tipo de violação|
+|`description`|string|Descrição da violação|
+|`qtd`|integer|Indicador de quantidade referente a violação|
 
 [Voltar ao Índice](README.md)
