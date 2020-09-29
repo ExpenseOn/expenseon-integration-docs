@@ -5,6 +5,5 @@ As os links a seguir são referencias técnicas de integração com o sistema Ex
 - [Informações Gerais](./General.md)
 - [Integrações com Sistemas ERP](./ERP.md)
 - [Pendências](./Pendencies.md)
-- [Integração com UBER Business](./Uber.md)
 
 Qualquer dúvida, entre em contato com: Diego Murakami - <diego@expenseon.com>
