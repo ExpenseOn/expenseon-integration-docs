@@ -631,8 +631,8 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`paymentMethodCode`|string|Código da forma de pagamento|
 |`paymentMethodDescription`|datetime|Descrição da forma de pagamento|
 |`mileageType`|integer|Tipo de Quilometragem(1 = Origem & Destino / 2 = Distância / 3 = Odômetro / 5 = GPS)|
-|`mileageStart`|string |GPS (inicial)|
-|`mileageEnd`|string |GPS (final)|
+|`mileageStart`|string|GPS (inicial)|
+|`mileageEnd`|string|GPS (final)|
 |`mileageDistance`|double|Distância de Quilometragem|
 |`mileageRate`|decimal|Taxa de Quilometragem|
 |`mileageOdometerStart`|integer|Odômetro (Quilometragem inicial)|
@@ -643,6 +643,11 @@ A configuração do parâmetro `changes` na chamada acima deverá ser feita de a
 |`areaName`|string|Descrição da área da despesa|
 |`customField1-10`|string|Campos customizados (de 1 a 10)|
 |`violations`|[Violation](#violation)[]|Lista de violações da despesa|
+|`quantity`|integer|Quantidade (usado para enumerar despesas em diárias, pessoas, etc) |
+|`isCardExpense`|boolean|Identificador para despesas de cartão|
+|`cardLastFourDigits`|string|Últimos 4 dígitos de despesas de cartão|
+
+
 
 
 ### AdvancedPayment
