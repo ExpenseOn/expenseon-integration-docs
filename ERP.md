@@ -346,6 +346,7 @@ GET /api/integration/report
 |---|---|---|
 |startDate|`datetime`|Data referência inicial|
 |endDate|`datetime`|Data referência final|
+|lastChangeDate|`datetime`|Data de última alteração do relatório. Parâmetro opcional|
 
 ##### Objeto de Resposta em caso de sucesso
 
@@ -368,6 +369,7 @@ GET /api/integration/report/status/{selectedStatus}
 |selectedStatus|`integer`|Status do relatório (1= Aberto / 2= Submetido / 3= Aprovado / 5= Reprovado / 6= Reembolso / 7 = Aguardando Processamento / 8 = Processando Pagamento / 9= Erro Processamento)|
 |startDate|`datetime`|Data referência inicial|
 |endDate|`datetime`|Data referência final|
+|lastChangeDate|`datetime`|Data de última alteração do relatório. Parâmetro opcional|
 
 ##### Objeto de Resposta em caso de sucesso
 
