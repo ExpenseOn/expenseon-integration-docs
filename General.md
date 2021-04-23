@@ -105,6 +105,8 @@ Os objetos que possuem dados do tipo datetime, terão o formato seguindo a norma
 |`datetime`|`2018-08-28T21:54:17.908Z`|
 |`date`|`2018-08-28`|
 
+Os objetos de data e hora possuem padrão UTC segundo a norma ISO 8601 citada e sempre serão recebidos com [UTC+0](https://en.wikipedia.org/wiki/UTC%C2%B100:00), podendo assim serem customizados de acordo com o timezone correspondente.
+
 #### Dados numéricos
 
 Todos os números serão formatados como `integer`, `decimal` ou `float`.
